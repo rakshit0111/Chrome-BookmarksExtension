@@ -10,6 +10,16 @@
             currentVideo = videoId;
             newVideoLoaded();
         }
+        else if (type === "PLAY")
+        {
+            youtubePlayer.currentTime = value;
+        }
+        else if (type === "DELETE")
+        {
+            currentVideoBookmarks = currentVideoBookmarks.filter((b) => b.time != value);
+            chrome.storage.sync.set({[currentVideo] : JSON.stringify(currentVideoBookmarks)});
+            response(currentVideoBookmarks);
+        }
     });
 
     const fetchBookmarks = () => {
@@ -43,7 +53,7 @@
         const currentTime = youtubePlayer.currentTime;
         const newBookmark = {
             time: currentTime,
-            desc: "Bookmark at " + getTime(currentTime),
+            desc: "You bookmarked " + getTime(currentTime),
         };
         
 
